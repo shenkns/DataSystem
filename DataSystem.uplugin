@@ -1,0 +1,36 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Data System",
+	"Description": "Data System Plugin",
+	"Category": "Meta",
+	"CreatedBy": "shenkns",
+	"EngineVersion": "5.1.0",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "DataSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "DataSystemEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ManagersSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "LogSystem",
+			"Enabled": true
+		}
+	]
+}
