@@ -23,7 +23,7 @@ void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
 {
 	if(UData* DataAsset = Cast<UData>(Data.GetAsset()))
 	{
-		if (UDataSystemEditorSettings* Settings = GetMutableDefault<UDataSystemEditorSettings>())
+		/*if (UDataSystemEditorSettings* Settings = GetMutableDefault<UDataSystemEditorSettings>())
 		{
 			auto& Map = Settings->DataTags;
 			const TSoftObjectPtr<UData> SavedSoft = TSoftObjectPtr<UData>(Data.ToSoftObjectPath());
@@ -78,7 +78,7 @@ void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
 
 				LOG_STATIC(LogDataSystemEditor, "%s Data Asset New Tag Added To Tags Data", *Data.AssetName.ToString())
 			}
-		}
+		}*/
 
 		// Update Icon
 		if (UTexture2D* Texture = DataAsset->Icon)
@@ -207,7 +207,7 @@ void FDataSystemEditorModule::StartupModule()
 	
 	LOG_STATIC(LogDataSystemEditor, "Data Assets Changes Binded")
 
-	CheckDataAssetsTags();
+	//CheckDataAssetsTags();
 }
 
 void FDataSystemEditorModule::ShutdownModule()
