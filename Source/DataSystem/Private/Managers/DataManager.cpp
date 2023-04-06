@@ -29,12 +29,15 @@ void UDataManager::FindDataAssets()
 
 	FARFilter Filter;
 	Filter.bRecursiveClasses = true;
-	Filter.PackagePaths.Add(*UData::StaticClass()->GetPathName());
 
 	for (const FString& Path : Settings->DataAssetsPaths)
 	{
-		Filter.PackagePaths.Add(FName(*Path));
+		if(AssetRegistry.PathExists(FName(*Path)))
+		{
+			Filter.PackagePaths.Add(FName(*Path));
+		}
 	}
+	
 	Filter.bRecursivePaths = true;
 
 	TArray<FAssetData> AssetDataArray;

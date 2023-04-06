@@ -16,7 +16,7 @@ public:
 	// Configuration For Data System
 	
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Data")
-	TArray<FString> DataAssetsPaths = { "/Game" };
+	TArray<FString> DataAssetsPaths = { "/Game/Data/" };
 
 	// Debug
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Debug")
