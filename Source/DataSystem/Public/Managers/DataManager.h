@@ -44,7 +44,7 @@ template <typename T>
 TArray<T*> UDataManager::GetDataAssets() const
 {
 	// Filter DataAssets
-	const TArray<UData*> Out = DataAssets.FilterByPredicate([&](const UData* Src)
+	TArray<UData*> Out = DataAssets.FilterByPredicate([&](const UData* Src)
 	{
 		return Src && Src->GetClass()->IsChildOf(T::StaticClass());	
 	});
