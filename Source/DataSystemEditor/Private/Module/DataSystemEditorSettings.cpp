@@ -39,8 +39,8 @@ void UDataSystemEditorSettings::PostEditChangeProperty(FPropertyChangedEvent& Pr
 					Outermost->SetDirtyFlag(true);
 
 					const FString FilePath = *FPackageName::GetLongPackagePath(Outermost->GetName());
-	
-					if (UPackage::SavePackage(Outermost, Asset, *FilePath, FSavePackageArgs()))
+
+					if (UPackage::SavePackage(Outermost, Asset, Asset->GetFlags(), *FilePath))
 					{
 						LOG(LogDataSystemEditorSettings, "Saved Package: %s", *FilePath);
 					}

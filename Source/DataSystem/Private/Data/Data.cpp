@@ -2,7 +2,6 @@
 
 #include "Data/Data.h"
 
-#include "UObject/ObjectSaveContext.h"
 #include "Module/DataSystemModule.h"
 #include "Data/CustomData.h"
 
@@ -30,9 +29,9 @@ TArray<UCustomData*> UData::GetCustomDataArray(TSubclassOf<UCustomData> Class) c
 
 // Detect Unique Tags And Update Icon
 #if UE_EDITOR
-void UData::PreSave(FObjectPreSaveContext SaveContext)
+void UData::PreSave(const class ITargetPlatform* TargetPlatform)
 {
-	Super::PreSave(SaveContext);
+	Super::PreSave(TargetPlatform);
 
 	if (!GIsCookerLoadingPackage && !IsRunningCommandlet())
 	{

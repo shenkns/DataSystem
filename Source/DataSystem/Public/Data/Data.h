@@ -49,7 +49,7 @@ public:
 	TArray<T*> GetCustomDataArray() const;
 
 #if UE_EDITOR
-	virtual void PreSave(FObjectPreSaveContext SaveContext) override;
+	virtual void PreSave(const class ITargetPlatform* TargetPlatform) override;
 #endif
 };
 
