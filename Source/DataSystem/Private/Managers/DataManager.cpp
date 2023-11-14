@@ -2,11 +2,13 @@
 
 #include "Managers/DataManager.h"
 
+#include "Log.h"
 #include "ManagersSystem.h"
 #include "Module/DataSystemSettings.h"
 #include "Engine/AssetManager.h"
-#include "LogSystem.h"
 #include "Module/DataSystemModule.h"
+
+DEFINE_LOG_CATEGORY_LOCAL(LogDataSystem);
 
 void UDataManager::InitManager()
 {
@@ -55,7 +57,7 @@ void UDataManager::FindDataAssets()
 		}
 	}
 
-	DEBUG_MESSAGE(GetDefault<UDataSystemSettings>()->bShowDebugMessages, LogDataSystem, "%d Data Assets Browsed", DataAssets.Num())
+	LOG(Display, "{} Data Assets Browsed", DataAssets.Num());
 }
 
 TArray<UData*> UDataManager::GetDataAssets(TSubclassOf<UData> Class) const

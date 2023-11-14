@@ -2,6 +2,8 @@
 
 #include "Module/DataSystemEditorModule.h"
 
+#include "Log.h"
+
 #if UE_EDITOR
 #include "ISettingsModule.h"
 #include "ImageUtils.h"
@@ -11,12 +13,12 @@
 #include "Module/DataSystemSettings.h"
 #include "Module/DataSystemModule.h"
 #include "Data/Data.h"
-#include "LogSystem.h"
 #endif
 
 IMPLEMENT_MODULE(FDataSystemEditorModule, DataSystemEditor)
 
 DATASYSTEMEDITOR_API DEFINE_LOG_CATEGORY(LogDataSystemEditor);
+DEFINE_LOG_CATEGORY_LOCAL(LogDataSystemEditor);
 
 #if UE_EDITOR
 void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
@@ -136,7 +138,7 @@ void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
 				NewThumbnail.SetImageSize(DstWidth, DstHeight);
 			}
 
-			LOG_STATIC(LogDataSystemEditor, "%s Data Asset New Thumbnail Generated And Resized", *Data.AssetName.ToString())
+			LOG(Display, "{} Data Asset New Thumbnail Generated And Resized", *Data.AssetName.ToString());
 
 			//Assign The Thumbnail And Dirty
 			UPackage* AssetPackage = DataAsset->GetOutermost();
@@ -145,7 +147,7 @@ void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
 				UPackage* OutermostPackage = DataAsset->GetOutermost();
 				FObjectThumbnail* Thumbnail = ThumbnailTools::CacheThumbnail(DataAsset->GetFullName(), &NewThumbnail, OutermostPackage);
 
-				LOG_STATIC(LogDataSystemEditor, "%s Data Asset Thumbnail Cached", *Data.AssetName.ToString())
+				LOG(Display, "{} Data Asset Thumbnail Cached", *Data.AssetName.ToString());
 				
 				if (ensure(Thumbnail))
 				{
@@ -161,7 +163,7 @@ void FDataSystemEditorModule::PreSaveDataAsset(const FAssetData& Data)
 					//Set That Thumbnail As A Valid Custom Thumbnail So It Will Be Saved Out
 					Thumbnail->SetCreatedAfterCustomThumbsEnabled();
 
-					LOG_STATIC(LogDataSystemEditor, "%s Data Asset Thumbnail Updated", *Data.AssetName.ToString())
+					LOG(Display, "{} Data Asset Thumbnail Updated", *Data.AssetName.ToString());
 				}
 			}
 		}
@@ -186,11 +188,11 @@ void FDataSystemEditorModule::OnRemovedDataAsset(const FAssetData& Data)
 				Settings->PostEditChange();
 				Settings->SaveConfig();
 
-				LOG_STATIC(LogDataSystemEditor, "%s Data Asset Removed From Tags Data And Saved", *Data.AssetName.ToString())
+				LOG(Display, "{} Data Asset Removed From Tags Data And Saved", *Data.AssetName.ToString());
 			}
 		}
 
-		LOG_STATIC(LogDataSystemEditor, "%s Data Asset Removed And Cleared Tags Data", *Data.AssetName.ToString())
+		LOG(Display, "{} Data Asset Removed And Cleared Tags Data", *Data.AssetName.ToString());
 	}
 }
 
@@ -205,7 +207,7 @@ void FDataSystemEditorModule::StartupModule()
 	
 	FDataSystemModule::Get().OnPreSaveDataAsset().AddRaw(this, &FDataSystemEditorModule::PreSaveDataAsset);
 	
-	LOG_STATIC(LogDataSystemEditor, "Data Assets Changes Binded")
+	LOG(Display, "Data Assets Changes Binded");
 
 	//CheckDataAssetsTags();
 }
@@ -243,7 +245,7 @@ void FDataSystemEditorModule::CheckDataAssetsTags()
 	TArray<FAssetData> AssetDataArray;
 	AssetRegistryModule.Get().GetAssets(Filter, AssetDataArray);
 	
-	LOG_STATIC(LogDataSystemEditor, "%d Data Assets Found In Pathes", AssetDataArray.Num())
+	LOG(Display, "{} Data Assets Found In Pathes", AssetDataArray.Num());
 	
 	TMap<FName, TSoftObjectPtr<UData>>& DataTags = EditorSettings->DataTags;
 	
@@ -274,12 +276,12 @@ void FDataSystemEditorModule::CheckDataAssetsTags()
 
 				PreSaveDataAsset(Data);
 
-				LOG_STATIC(LogDataSystemEditor, "%s Data Asset Tag Updated Or Already Used", *Data.AssetName.ToString())
+				LOG(Display, "{} Data Asset Tag Updated Or Already Used", *Data.AssetName.ToString());
 			}
 
 			*DataTags.Add(DataAsset->Tag, SoftObject);
 
-			LOG_STATIC(LogDataSystemEditor, "%s Data Asset Added To Data Tags And Saved", *Data.AssetName.ToString())
+			LOG(Display, "{} Data Asset Added To Data Tags And Saved", *Data.AssetName.ToString());
 		}
 	}
 }
@@ -297,7 +299,7 @@ void FDataSystemEditorModule::RegisterSystemSettings() const
 			GetMutableDefault<UDataSystemEditorSettings>()
 		);
 
-		LOG_STATIC(LogDataSystemEditor, "Save-Load System Settings Registered")
+		LOG(Display, "Save-Load System Settings Registered");
 	}
 }
 
@@ -307,7 +309,7 @@ void FDataSystemEditorModule::UnregisterSystemSettings() const
 	{
 		SettingsModule->UnregisterSettings("Project", "Plugins", "Data System Editor");
 
-		LOG_STATIC(LogDataSystemEditor, "Data System Editor Settings Unregistered")
+		LOG(Display, "Data System Editor Settings Unregistered");
 	}
 }
 #endif

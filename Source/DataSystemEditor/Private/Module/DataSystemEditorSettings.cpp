@@ -2,11 +2,13 @@
 
 #include "Module/DataSystemEditorSettings.h"
 
+#include "Log.h"
 #include "Data/Data.h"
-#include "LogSystem.h"
 #include "CoreUObject/Public/UObject/SavePackage.h"
+#include "Log/Details/LocalLogCategory.h"
 
 DATASYSTEMEDITOR_API DEFINE_LOG_CATEGORY(LogDataSystemEditorSettings);
+DEFINE_LOG_CATEGORY_LOCAL(LogDataSystemEditorSettings);
 
 #if UE_EDITOR
 void UDataSystemEditorSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
@@ -15,7 +17,7 @@ void UDataSystemEditorSettings::PostEditChangeProperty(FPropertyChangedEvent& Pr
 
 	if (const FMapProperty* MapProp = CastField<FMapProperty>(PropertyChangedEvent.MemberProperty))
 	{
-		LOG(LogDataSystemEditorSettings, "CPPType %s", *MapProp->GetCPPType(nullptr, 0));
+		LOG(Display, "CPPType {}", *MapProp->GetCPPType(nullptr, 0));
 
 		const int32 Idx = PropertyChangedEvent.GetArrayIndex("AssetTagsMap_Key");
 		if (Idx >= 0)
@@ -25,7 +27,7 @@ void UDataSystemEditorSettings::PostEditChangeProperty(FPropertyChangedEvent& Pr
 			if (const TTuple<FName, TSoftObjectPtr<UData>>* PairPtr = reinterpret_cast<TTuple<FName, TSoftObjectPtr<UData>>*>(ScriptMapHelper.GetPairPtr(Idx)))
 			{
 				const TTuple<FName, TSoftObjectPtr<UData>>& Pair = *PairPtr;
-				LOG(LogDataSystemEditorSettings, "ChangeName %s", *Pair.Key.ToString());
+				LOG(Display, "ChangeName {}", *Pair.Key.ToString());
 				const TSoftObjectPtr<UData> AssetSoft = Pair.Value;
 				if (UData* Asset = AssetSoft.LoadSynchronous())
 				{
@@ -42,11 +44,11 @@ void UDataSystemEditorSettings::PostEditChangeProperty(FPropertyChangedEvent& Pr
 
 					if (UPackage::SavePackage(Outermost, Asset, Asset->GetFlags(), *FilePath))
 					{
-						LOG(LogDataSystemEditorSettings, "Saved Package: %s", *FilePath);
+						LOG(Display, "Saved Package: {}", *FilePath);
 					}
 					else
 					{
-						LOG_ERROR(LogDataSystemEditorSettings, "Saved Package FAILED!: %s", *FilePath);
+						LOG(Error, "Saved Package FAILED!: {}", *FilePath);
 					}
 				}
 			}

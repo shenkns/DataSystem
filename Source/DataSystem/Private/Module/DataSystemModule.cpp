@@ -2,8 +2,9 @@
 
 #include "Module/DataSystemModule.h"
 
+#include "Log.h"
 #include "Module/DataSystemSettings.h"
-#include "LogSystem.h"
+#include "Log/Details/LocalLogCategory.h"
 
 #if UE_EDITOR
 #include "ISettingsModule.h"
@@ -12,6 +13,7 @@
 IMPLEMENT_MODULE(FDataSystemModule, DataSystem)
 
 DATASYSTEM_API DEFINE_LOG_CATEGORY(LogDataSystem);
+DEFINE_LOG_CATEGORY_LOCAL(LogDataSystem);
 
 #if UE_EDITOR
 void FDataSystemModule::PreSaveDataAsset(const FAssetData& Data)
@@ -48,7 +50,7 @@ void FDataSystemModule::RegisterSystemSettings() const
 			GetMutableDefault<UDataSystemSettings>()
 		);
 
-		LOG_STATIC(LogDataSystem, "Data System Settings Registered")
+		LOG(Display, "Data System Settings Registered");
 	}
 }
 
@@ -58,7 +60,7 @@ void FDataSystemModule::UnregisterSystemSettings() const
 	{
 		SettingsModule->UnregisterSettings("Project", "Plugins", "Data System");
 
-		LOG_STATIC(LogDataSystem, "Data System Settings Unregistered")
+		LOG(Display, "Data System Settings Unregistered");
 	}
 }
 #endif
